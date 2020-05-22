@@ -1,4 +1,4 @@
-use lexer;
+use super::lexer;
 
 #[derive(Debug, Clone)]
 pub struct Parser {

@@ -1,7 +1,6 @@
 extern crate clap;
 use clap::{App, Arg};
 
-extern crate joke;
 use joke::parser;
 
 use std::fs::OpenOptions;

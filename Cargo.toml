@@ -2,7 +2,7 @@
 name = "joke"
 version = "0.1.0"
 authors = ["132yse <1533540012@qq.com>"]
-edition = "2015"
+edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
