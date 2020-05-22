@@ -1,6 +1,9 @@
 extern crate clap;
 use clap::{App, Arg};
 
+extern crate joke;
+use joke::parser;
+
 use std::fs::OpenOptions;
 use std::io::prelude::*;
 
@@ -21,4 +24,7 @@ fn run(name: &str) {
             return;
         }
     };
+
+    let parser = parser::Parser::new(body);
+    println!("{:?}",parser);
 }

@@ -1,6 +1,6 @@
 use std::collections::VecDeque;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Lexer {
     code: String,
     pos: usize,
@@ -12,7 +12,7 @@ impl Lexer {
         Lexer {
             code: code,
             pos: 0,
-            buf: VecDeque: new(),
+            buf: VecDeque::new(),
         }
     }
 }
