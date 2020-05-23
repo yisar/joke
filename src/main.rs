@@ -1,8 +1,6 @@
 extern crate clap;
 use clap::{App, Arg};
-
 use joke::parser;
-
 use std::fs::OpenOptions;
 use std::io::prelude::*;
 
@@ -25,5 +23,9 @@ fn run(name: &str) {
     };
 
     let parser = parser::Parser::new(body);
-    println!("{:?}",parser);
+
+    let mut nodes = vec![];
+    while let Ok(ok) = parser.next() {
+        nodes.push(ok)
+    }
 }
