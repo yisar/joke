@@ -1,4 +1,4 @@
-use super::token::{Kind, Token};
+use super::token::{Kind, Symbol, Token};
 use std::collections::VecDeque;
 
 #[derive(Debug, Clone)]
@@ -72,12 +72,31 @@ impl Lexer {
     fn number(&mut self) -> Result<Token, ()> {
         let mut last = self.next_char()?;
         let num = self.skip_while(|c| {
-            println!("222");
             let is_end_of_num = !c.is_alphanumeric() && c != '.';
             last = c;
             !is_end_of_num
         })?;
-        let num: f64 = self.read_num(num.as_str()) as f64
+        let num: f64 = self.read_num(num.as_str()) as f64;
         Ok(Token::number(num))
+    }
+
+    fn read_num(&mut self, num: &str) -> i64 {
+        num.chars().fold(0, |n, c| match c {
+            '0'..='9' => n * 10 + c.to_digit(10).unwrap() as i64,
+            _ => n,
+        })
+    }
+
+    fn symbol(&mut self) -> Result<Token, ()> {
+        let mut symbol = Symbol::Hash;
+        let c = self.skip_char()?;
+        match c {
+            '(' => symbol = Symbol::OpeningParen,
+            ')' => symbol = Symbol::ClosingParen,
+            '.' => symbol = Symbol::Point,
+            '#' => symbol = Symbol::Hash,
+            _ => {}
+        };
+        Ok(Token::symbol(symbol))
     }
 }

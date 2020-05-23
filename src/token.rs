@@ -4,9 +4,18 @@ pub struct Token {
 }
 
 #[derive(Debug, Clone)]
+pub enum Symbol {
+    OpeningParen,
+    ClosingParen,
+    Point,
+    Hash,
+}
+
+#[derive(Debug, Clone, PartialEq)]
 pub enum Kind {
     Identifier(String),
     Number(f64),
+    Symbol(Symbol),
     LineTerminator,
 }
 
@@ -19,6 +28,12 @@ impl Token {
     pub fn number(num: f64) -> Token {
         Token {
             kind: Kind::Number(num),
+        }
+    }
+
+    pub fn symbol(symbol: Symbol) -> Token {
+        Token {
+            kind: Kind::Symbol(symbol),
         }
     }
 }
