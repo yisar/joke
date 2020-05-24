@@ -40,8 +40,8 @@ pub struct VM {
     pub consts: Const,
     insts: ByteCode,
     stack: Vec<Value>,
-    pc:isize,
-    ops: [fn(&mut VM);6]
+    pc: isize,
+    ops: [fn(&mut VM); 6],
 }
 
 impl VM {
@@ -63,20 +63,20 @@ impl VM {
             insts: vec![],
             consts: Const::new(),
             pc: 0isize,
-            ops:[
+            ops: [
                 end,
                 create_context,
                 get_global,
                 get_member,
                 push_const,
-                call
-            ]
+                call,
+            ],
         }
     }
 }
 
 impl VM {
-    pub fn run(&mut self, insts:ByteCode){
+    pub fn run(&mut self, insts: ByteCode) {
         self.insts = insts;
         loop {
             let code = self.insts[self.pc as usize];
@@ -98,16 +98,88 @@ macro_rules! get_byte {
     };
 }
 
-fn end(vm: &mut VM) {}
+fn end(_vm: &mut VM) {}
 
 fn create_context(vm: &mut VM) {
     vm.pc += 1;
-    get_byte!(vm, n , usize);
-    get_byte!(vm, argc, usize);
+    get_byte!(vm, _n, usize);
+    get_byte!(vm, _argc, usize);
 }
 
 fn push_const(vm: &mut VM) {
     vm.pc += 1;
     get_byte!(vm, n, usize);
     vm.stack.push(vm.consts.value[n].clone());
+}
+
+fn get_global(vm: &mut VM) {
+    vm.pc += 1;
+    get_byte!(vm, n, usize);
+    let val = (*(*vm.global)
+        .borrow()
+        .get(vm.consts.string[n].as_str())
+        .unwrap())
+    .clone();
+    vm.stack.push(val);
+}
+
+fn get_member(vm: &mut VM) {
+    vm.pc += 1;
+    let member = vm.stack.pop().unwrap();
+    let parent = vm.stack.pop().unwrap();
+    if let Value::String(x) = member {
+        match parent {
+            Value::Object(map) => match map.borrow().get(x.as_str()) {
+                Some(addr) => {
+                    let val = addr.clone();
+                    vm.stack.push(val)
+                }
+                None => vm.stack.push(Value::Undefined),
+            },
+            _ => unreachable!(),
+        }
+    }
+}
+
+fn call(vm: &mut VM) {
+    vm.pc += 1; // Call
+    get_byte!(vm, argc, usize);
+
+    let callee = vm.stack.pop().unwrap();
+
+    loop {
+        match callee {
+            Value::Console(1) => {
+                let mut args = vec![];
+                for _ in 0..argc {
+                    args.push(vm.stack.pop().unwrap());
+                }
+                args.reverse();
+                console_log(args);
+                break;
+            }
+            c => {
+                println!("Call: err: {:?}, pc = {}", c, vm.pc);
+                break;
+            }
+        }
+    }
+
+    fn console_log(args: Vec<Value>) {
+        let args_len = args.len();
+        for i in 0..args_len {
+            match args[i] {
+                Value::String(ref s) => {
+                    println!("{:?}", s);
+                }
+                Value::Number(ref n) => {
+                    println!("{}", n);
+                }
+                Value::Undefined => {
+                    println!("undefined");
+                }
+                _ => {}
+            }
+        }
+    }
 }

@@ -42,5 +42,7 @@ fn run(name: &str) {
     let mut vm = vm::VM::new();
     vm.consts = codegen.bytecode.consts;
 
+    println!("Result:");
+
     vm.run(insts);
 }
