@@ -33,4 +33,6 @@ fn run(name: &str) {
     println!("[NodeList] {:?}", nodes);
 
     let mut codegen = codegen::CodeGen::new();
+    let mut insts = vec![];
+    codegen.compile(&nodes[0],&mut insts);
 }

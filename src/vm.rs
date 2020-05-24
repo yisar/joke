@@ -1,3 +1,6 @@
+pub const END: u8 = 0x00;
+pub const CREATE_CONTEXT: u8 = 0x01;
+
 #[derive(Debug, Clone)]
 pub struct Const {
     pub value: Vec<Value>,

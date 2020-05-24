@@ -1,8 +1,9 @@
-use super::bytecode::{ByteCodeGen};
+use super::bytecode::{ByteCodeGen,ByteCode};
+use super::parser::{Node};
 
-#[derive(Debug,Clone)]
+#[derive(Debug, Clone)]
 pub struct CodeGen {
-    bytecode: ByteCodeGen
+    bytecode: ByteCodeGen,
 }
 
 impl CodeGen {
@@ -10,5 +11,12 @@ impl CodeGen {
         CodeGen {
             bytecode: ByteCodeGen::new(),
         }
+    }
+}
+
+impl CodeGen {
+    pub fn compile(&mut self, node: &Node, insts: &mut ByteCode) {
+        let pos = insts.len();
+        self.bytecode.create_context(0, 0, insts)
     }
 }
