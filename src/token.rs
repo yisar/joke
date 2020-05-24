@@ -3,7 +3,7 @@ pub struct Token {
     pub kind: Kind,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum Symbol {
     OpeningParen,
     ClosingParen,

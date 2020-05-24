@@ -33,6 +33,10 @@ impl Lexer {
         self.pos += next_pos;
         Ok(cur_char)
     }
+
+    pub fn unget(&mut self, tok: &Token) {
+        self.buf.push_back(tok.clone());
+    }
 }
 
 impl Lexer {
