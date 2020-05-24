@@ -1,2 +1,1 @@
-run:
-	cargo +nightly run ./demo/console-log.js
+cargo +nightly run ./demo/console-log.js

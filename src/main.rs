@@ -1,6 +1,7 @@
 extern crate clap;
 use clap::{App, Arg};
 use joke::parser;
+use joke::codegen;
 use std::fs::OpenOptions;
 use std::io::prelude::*;
 
@@ -30,4 +31,6 @@ fn run(name: &str) {
     }
 
     println!("[NodeList] {:?}", nodes);
+
+    let mut codegen = codegen::CodeGen::new();
 }
