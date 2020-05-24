@@ -2,6 +2,7 @@ extern crate clap;
 use clap::{App, Arg};
 use joke::parser;
 use joke::codegen;
+use joke::vm;
 use std::fs::OpenOptions;
 use std::io::prelude::*;
 
@@ -35,4 +36,11 @@ fn run(name: &str) {
     let mut codegen = codegen::CodeGen::new();
     let mut insts = vec![];
     codegen.compile(&nodes[0],&mut insts);
+
+    println!("[ByteCode] {:?}", insts);
+
+    let mut vm = vm::VM::new();
+    vm.consts = codegen.bytecode.consts;
+
+    vm.run(insts);
 }

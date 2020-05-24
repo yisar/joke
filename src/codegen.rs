@@ -5,7 +5,7 @@ use super::vm::Value;
 
 #[derive(Debug, Clone)]
 pub struct CodeGen {
-    bytecode: ByteCodeGen,
+    pub bytecode: ByteCodeGen,
     addr: IdGen,
 }
 
@@ -20,10 +20,9 @@ impl CodeGen {
 
 impl CodeGen {
     pub fn compile(&mut self, node: &Node, insts: &mut ByteCode) {
-        let pos = insts.len();
         self.bytecode.create_context(0, 0, insts);
-        self.addr.add();
         self.run(node, insts);
+        self.bytecode.end(insts);
     }
 
     fn run(&mut self, node: &Node, insts: &mut ByteCode) {
@@ -51,13 +50,11 @@ impl CodeGen {
         }
 
         self.run(callee, insts);
-
         self.bytecode.call(args.len() as u32, insts);
     }
 
     fn member(&mut self, parent: &Node, member: &String, insts: &mut ByteCode) {
         self.run(parent, insts);
-
         self.bytecode.push_const(Value::String(member.clone()), insts);
         self.bytecode.get_member(insts);
     }
