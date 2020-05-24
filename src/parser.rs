@@ -9,11 +9,11 @@ pub struct Parser {
 #[derive(Debug, Clone)]
 pub enum Node {
     NodeList(Vec<Node>),
-    Node,
     Call(Box<Node>, Vec<Node>),
     Member(Box<Node>, String),
     Identifier(String),
     Number(f64),
+    Node,
 }
 
 impl Parser {

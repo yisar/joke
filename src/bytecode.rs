@@ -1,4 +1,4 @@
-use super::vm::{Const, CREATE_CONTEXT};
+use super::vm::{Const, Value, CALL, CREATE_CONTEXT, END, GET_GLOBAL, GET_MEMBER, PUSH_CONST};
 
 #[derive(Debug, Clone)]
 pub struct ByteCodeGen {
@@ -16,11 +16,38 @@ impl ByteCodeGen {
 }
 
 impl ByteCodeGen {
+    pub fn end(&self, insts: &mut ByteCode) {
+        insts.push(END);
+    }
+
+    pub fn call(&self, argc: u32, insts: &mut ByteCode) {
+        insts.push(CALL);
+        self.gen_int32(argc as i32, insts);
+    }
+
     pub fn create_context(&self, n: usize, argc: usize, insts: &mut ByteCode) {
         insts.push(CREATE_CONTEXT);
         self.gen_int32(n as i32, insts);
         self.gen_int32(argc as i32, insts);
     }
+    pub fn push_const(&mut self, val: Value, insts: &mut ByteCode) {
+        insts.push(PUSH_CONST);
+        let id = self.consts.value.len();
+        self.consts.value.push(val);
+        self.gen_int32(id as i32, insts);
+    }
+
+    pub fn get_member(&self, insts: &mut ByteCode) {
+        insts.push(GET_MEMBER);
+    }
+
+    pub fn get_global(&mut self, name: String, insts: &mut ByteCode) {
+        insts.push(GET_GLOBAL);
+        let id = self.consts.string.len();
+        self.consts.string.push(name);
+        self.gen_int32(id as i32, insts);
+    }
+
     pub fn gen_int8(&self, n: i8, insts: &mut ByteCode) {
         insts.push(n as u8);
     }
