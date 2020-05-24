@@ -22,10 +22,12 @@ fn run(name: &str) {
         }
     };
 
-    let parser = parser::Parser::new(body);
+    let mut parser = parser::Parser::new(body);
 
     let mut nodes = vec![];
     while let Ok(ok) = parser.next() {
         nodes.push(ok)
     }
+
+    println!("[NodeList] {:?}", nodes);
 }

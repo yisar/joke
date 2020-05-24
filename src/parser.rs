@@ -6,8 +6,9 @@ pub struct Parser {
     pub lexer: lexer::Lexer,
 }
 
+#[derive(Debug, Clone)]
 pub enum Node {
-    StateList(Vec<Node>),
+    NodeList(Vec<Node>),
     Node,
     Call(Box<Node>, Vec<Node>),
     Member(Box<Node>, String),
@@ -44,7 +45,7 @@ impl Parser {
             }
         }
 
-        Ok(Node::StateList(items))
+        Ok(Node::NodeList(items))
     }
 
     fn read_atom(&mut self) -> Result<Node, ()> {
