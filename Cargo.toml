@@ -1,7 +1,16 @@
 [package]
 name = "joke"
-version = "0.1.0"
+version = "0.0.1"
 authors = ["132yse <1533540012@qq.com>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/yisar/joke"
+documentation = "https://github.com/yisar/joke"
+homepage = "https://crates.io/crates/joke"
+description = """
+Tiny Javascript engine, does not support Typescript(yet).
+"""
+keywords = ["javascript-engine"]
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
