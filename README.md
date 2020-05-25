@@ -3,7 +3,7 @@
 > Tiny Javascript engine, does not support Typescript(yet).
 
 ```shell
-code -> lexer -> [tokens] -> parser -> [NodeList] -> codegen -> [bytecodes] -> vm -> run
+code -> lexer -> [tokens] -> parser -> [AST] -> codegen -> [bytecodes] -> vm -> run
 ```
 
 ### Motivation

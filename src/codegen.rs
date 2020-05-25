@@ -27,7 +27,7 @@ impl CodeGen {
 
     fn run(&mut self, node: &Node, insts: &mut ByteCode) {
         match node {
-            &Node::NodeList(ref node_list) => self.node_list(node_list, insts),
+            &Node::AST(ref node_list) => self.node_list(node_list, insts),
             &Node::Call(ref callee, ref args) => self.call(&*callee, args, insts),
             &Node::Member(ref parent, ref member) => self.member(&*parent, member, insts),
             &Node::Identifier(ref name) => self.identifier(name, insts),
