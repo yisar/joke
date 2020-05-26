@@ -34,6 +34,8 @@ pub const GET_GLOBAL: u8 = 0x02;
 pub const GET_MEMBER: u8 = 0x03;
 pub const PUSH_CONST: u8 = 0x04;
 pub const CALL: u8 = 0x05;
+pub const PUSH_TRUE: u8 = 0x06;
+pub const PUSH_FALSE: u8 = 0x07;
 
 pub struct VM {
     global: Rc<RefCell<HashMap<String, Value>>>,
@@ -41,7 +43,7 @@ pub struct VM {
     insts: ByteCode,
     stack: Vec<Value>,
     pc: isize,
-    ops: [fn(&mut VM); 6],
+    ops: [fn(&mut VM); 8],
 }
 
 impl VM {
@@ -70,6 +72,8 @@ impl VM {
                 get_member,
                 push_const,
                 call,
+                push_true,
+                push_false,
             ],
         }
     }
@@ -110,6 +114,16 @@ fn push_const(vm: &mut VM) {
     vm.pc += 1;
     get_byte!(vm, n, usize);
     vm.stack.push(vm.consts.value[n].clone());
+}
+
+fn push_false(self_: &mut VM) {
+    self_.pc += 1; 
+    self_.stack.push(Value::Bool(false));
+}
+
+fn push_true(self_: &mut VM) {
+    self_.pc += 1;
+    self_.stack.push(Value::Bool(true));
 }
 
 fn get_global(vm: &mut VM) {
@@ -166,6 +180,7 @@ fn call(vm: &mut VM) {
     }
 
     fn console_log(args: Vec<Value>) {
+        println!("{:?}",args);
         let args_len = args.len();
         for i in 0..args_len {
             match args[i] {

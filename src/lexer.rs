@@ -53,6 +53,7 @@ impl Lexer {
         match self.next_char()? {
             'a'..='z' | 'A'..='Z' | '_' => self.identifier(),
             '0'..='9' => self.number(),
+            '\'' | '\"' => self.string(),
             _ => self.symbol(),
         }
     }
@@ -60,6 +61,13 @@ impl Lexer {
     fn identifier(&mut self) -> Result<Token, ()> {
         let ident = self.skip_while(|c| c.is_alphanumeric() || c == '_')?;
         Ok(Token::identifier(ident))
+    }
+
+    pub fn string(&mut self) -> Result<Token, ()> {
+        let quote = self.skip_char()?;
+        let s = self.skip_while(|c| c != quote)?;
+        assert_eq!(self.skip_char()?, quote);
+        Ok(Token::string(s))
     }
 
     fn skip_while<F>(&mut self, mut f: F) -> Result<String, ()>

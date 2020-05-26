@@ -13,6 +13,8 @@ pub enum Node {
     Member(Box<Node>, String),
     Identifier(String),
     Number(f64),
+    String(String),
+    Bool(bool),
     Node,
 }
 
@@ -80,6 +82,8 @@ impl Parser {
         match tok.kind {
             Kind::Identifier(id) => Ok(Node::Identifier(id)),
             Kind::Number(num) => Ok(Node::Number(num)),
+            Kind::String(str) => Ok(Node::String(str)),
+            Kind::Bool(bl) => Ok(Node::Bool(bl)),
             Kind::LineTerminator => self.begin(),
             e => unimplemented!("{:?}", e),
         }

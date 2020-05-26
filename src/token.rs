@@ -15,7 +15,9 @@ pub enum Symbol {
 pub enum Kind {
     Identifier(String),
     Number(f64),
+    String(String),
     Symbol(Symbol),
+    Bool(bool),
     LineTerminator,
 }
 
@@ -34,6 +36,12 @@ impl Token {
     pub fn symbol(symbol: Symbol) -> Token {
         Token {
             kind: Kind::Symbol(symbol),
+        }
+    }
+
+    pub fn string(s: String) -> Token {
+        Token {
+            kind: Kind::String(s),
         }
     }
 }

@@ -32,6 +32,8 @@ impl CodeGen {
             &Node::Member(ref parent, ref member) => self.member(&*parent, member, insts),
             &Node::Identifier(ref name) => self.identifier(name, insts),
             &Node::Number(n) => self.bytecode.push_const(Value::Number(n), insts),
+            &Node::String(ref s) => self.bytecode.push_const(Value::String(s.clone()), insts),
+            &Node::Bool(b) => self.bytecode.push_bool(b, insts),
             _ => {}
         }
     }

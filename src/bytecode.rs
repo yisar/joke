@@ -1,4 +1,7 @@
-use super::vm::{Const, Value, CALL, CREATE_CONTEXT, END, GET_GLOBAL, GET_MEMBER, PUSH_CONST};
+use super::vm::{
+    Const, Value, CALL, CREATE_CONTEXT, END, GET_GLOBAL, GET_MEMBER, PUSH_CONST, PUSH_FALSE,
+    PUSH_TRUE,
+};
 
 #[derive(Debug, Clone)]
 pub struct ByteCodeGen {
@@ -35,6 +38,10 @@ impl ByteCodeGen {
         let id = self.consts.value.len();
         self.consts.value.push(val);
         self.gen_int32(id as i32, insts);
+    }
+
+    pub fn push_bool(&self, b: bool, insts: &mut ByteCode) {
+        insts.push(if b { PUSH_TRUE } else { PUSH_FALSE })
     }
 
     pub fn get_member(&self, insts: &mut ByteCode) {
