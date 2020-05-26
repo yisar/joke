@@ -180,7 +180,6 @@ fn call(vm: &mut VM) {
     }
 
     fn console_log(args: Vec<Value>) {
-        println!("{:?}",args);
         let args_len = args.len();
         for i in 0..args_len {
             match args[i] {

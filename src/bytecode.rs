@@ -55,21 +55,10 @@ impl ByteCodeGen {
         self.gen_int32(id as i32, insts);
     }
 
-    pub fn gen_int8(&self, n: i8, insts: &mut ByteCode) {
-        insts.push(n as u8);
-    }
-
     pub fn gen_int32(&self, n: i32, insts: &mut ByteCode) {
         insts.push(((n >> 0) & 0xff as i32) as u8);
         insts.push(((n >> 8) & 0xff as i32) as u8);
         insts.push(((n >> 16) & 0xff as i32) as u8);
         insts.push(((n >> 24) & 0xff as i32) as u8);
-    }
-
-    pub fn replace_int32(&self, n: i32, insts: &mut [u8]) {
-        insts[3] = (n >> 24) as u8;
-        insts[2] = (n >> 16) as u8;
-        insts[1] = (n >> 8) as u8;
-        insts[0] = (n >> 0) as u8;
     }
 }
