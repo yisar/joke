@@ -44,4 +44,10 @@ impl Token {
             kind: Kind::String(s),
         }
     }
+
+    pub fn line_terminator() -> Token {
+        Token {
+            kind: Kind::LineTerminator,
+        }
+    }
 }

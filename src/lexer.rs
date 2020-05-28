@@ -53,6 +53,7 @@ impl Lexer {
         match self.next_char()? {
             'a'..='z' | 'A'..='Z' | '_' => self.identifier(),
             '0'..='9' => self.number(),
+            '\n' => self.line_terminator(),
             '\'' | '\"' => self.string(),
             _ => self.symbol(),
         }
@@ -97,6 +98,11 @@ impl Lexer {
             '0'..='9' => n * 10 + c.to_digit(10).unwrap() as i64,
             _ => n,
         })
+    }
+
+    fn line_terminator(&mut self) -> Result<Token, ()> {
+        self.skip_while(|c| c == '\n')?;
+        Ok(Token::line_terminator())
     }
 
     fn symbol(&mut self) -> Result<Token, ()> {
