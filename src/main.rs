@@ -1,7 +1,8 @@
 extern crate clap;
+
 use clap::{App, Arg};
-use joke::parser;
 use joke::codegen;
+use joke::parser;
 use joke::vm;
 use std::fs::OpenOptions;
 use std::io::prelude::*;
@@ -24,6 +25,8 @@ fn run(name: &str) {
         }
     };
 
+    println!("[Code] {:?}", body);
+
     let mut parser = parser::Parser::new(body);
 
     let mut nodes = vec![];
@@ -35,7 +38,7 @@ fn run(name: &str) {
 
     let mut codegen = codegen::CodeGen::new();
     let mut insts = vec![];
-    codegen.compile(&nodes[0],&mut insts);
+    codegen.compile(&nodes[0], &mut insts);
 
     println!("[ByteCode] {:?}", insts);
 
